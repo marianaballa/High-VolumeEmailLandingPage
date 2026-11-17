@@ -4,6 +4,8 @@ import { Montserrat, Source_Sans_3 } from 'next/font/google'
 import Script from 'next/script'
 import { BodyCustomCode, renderHeadCustomCode } from '@/lib/make-custom-code'
 import { makeSiteSettings, sanitizeHtmlAttribute } from '@/lib/make-site-settings'
+import { SiteFooter } from './components/SiteFooter'
+import { SiteHeader } from './components/SiteHeader'
 import './styles.css'
 
 const montserrat = Montserrat({
@@ -16,32 +18,67 @@ const sourceSans = Source_Sans_3({
   variable: '--font-source-sans',
 })
 
-const defaultTitle = 'Dedicated High-Volume Email Infrastructure'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const defaultTitle = 'High-Volume Email Marketing & Bulk Email Sending on a Dedicated VPS'
 const title = makeSiteSettings.title ?? defaultTitle
 const description =
   makeSiteSettings.description ??
-  'Dedicated servers, clean IPs, and expert support for sending 200K to 5M+ emails per month.'
+  'Bulk email sending for email marketing and newsletters at 200K to millions of emails per month. Dedicated VPS, clean private IPs, SPF/DKIM/DMARC, and expert setup in 48 hours.'
 const favicon = makeSiteSettings.icons?.icon
-const socialImage = makeSiteSettings.openGraph?.image
+const socialImage = makeSiteSettings.openGraph?.image ?? '/phplist-dashboard.png'
 const googleAnalyticsId = sanitizeHtmlAttribute(makeSiteSettings.analytics?.googleAnalyticsId)
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(siteUrl),
   title,
   description,
-  robots: makeSiteSettings.robots?.index === false ? { follow: false, index: false } : undefined,
+  keywords: [
+    'email marketing',
+    'bulk email sending',
+    'bulk email',
+    'mass email sending',
+    'newsletter sending',
+    'email newsletter',
+    'high-volume email',
+    'dedicated IP email',
+    'email marketing VPS',
+    'phpList hosting',
+  ],
+  alternates: { canonical: '/' },
+  robots:
+    makeSiteSettings.robots?.index === false
+      ? { follow: false, index: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+            'max-video-preview': -1,
+          },
+        },
   icons: favicon ? { icon: favicon } : undefined,
   openGraph: {
+    type: 'website',
+    url: '/',
     title,
     description,
-    images: socialImage ? [socialImage] : undefined,
+    locale: 'en_US',
+    images: [
+      {
+        url: socialImage,
+        alt: 'phpList email marketing dashboard for high-volume bulk email sending',
+      },
+    ],
   },
-  twitter: socialImage
-    ? {
-        card: 'summary_large_image',
-        images: [socialImage],
-      }
-    : undefined,
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [socialImage],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -65,7 +102,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
         )}
         <div id="root" tabIndex={-1}>
+          <SiteHeader />
           {children}
+          <SiteFooter />
         </div>
         {googleAnalyticsId && (
           <>
