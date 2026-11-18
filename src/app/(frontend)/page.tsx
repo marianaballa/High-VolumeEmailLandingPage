@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { InterestForm } from './InterestForm'
+import { asset, siteUrl } from '@/lib/site'
 
 const videoEmbedUrl = 'https://www.youtube.com/embed/LmhGAHZRF1Q'
 
@@ -99,8 +99,6 @@ const faqs = [
       'No. The Pro Marketer VPS is dedicated to email marketing: newsletters, promotional campaigns, and other bulk sends. Transactional emails such as password resets and order receipts are not included.',
   },
 ]
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -209,7 +207,7 @@ export default function HomePage() {
               height={1122}
               priority
               sizes="(max-width: 900px) 94vw, 52vw"
-              src="/phplist-dashboard.png"
+              src={asset('/phplist-dashboard.png')}
               width={2048}
             />
           </div>
@@ -283,7 +281,21 @@ export default function HomePage() {
               <span>Hands-on technical setup</span>
             </div>
           </div>
-          <InterestForm />
+          {/* MAUTIC FORM START: replace this card with your Mautic form embed. */}
+          <div className="interest-form sales-card">
+            <h3>Talk to our sales team</h3>
+            <p>
+              Tell us your monthly sending volume and we’ll recommend the right dedicated VPS setup
+              for your bulk email and newsletter campaigns.
+            </p>
+            <a
+              className="button button-primary"
+              href="mailto:sales@phplist.com?subject=Pro%20Marketer%20VPS%20enquiry"
+            >
+              Email sales@phplist.com
+            </a>
+          </div>
+          {/* MAUTIC FORM END */}
         </div>
       </section>
 
