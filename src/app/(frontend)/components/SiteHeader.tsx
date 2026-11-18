@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { asset } from '@/lib/site'
 
 const site = 'https://www.phplist.com'
 
@@ -60,7 +61,7 @@ export function SiteHeader() {
             alt="phpList logo"
             height={50}
             priority
-            src="/phplist-logo.svg"
+            src={asset('/phplist-logo.svg')}
             width={160}
             unoptimized
           />
